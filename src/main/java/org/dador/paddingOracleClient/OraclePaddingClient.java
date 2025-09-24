@@ -4,6 +4,7 @@ package org.dador.paddingOracleClient;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static java.lang.System.arraycopy;
 import static org.dador.paddingOracleClient.HexConverters.*;
 
 /**
@@ -27,6 +28,18 @@ public class OraclePaddingClient {
         /**
          * TODO : Your CODE HERE
          */
+       /*for(int i=0;i<n && i<BLOCK_SIZE;i++)
+        {
+            result[BLOCK_SIZE-n+i]=(byte)n;
+
+        }
+
+        */
+        for(int i=BLOCK_SIZE-n;i<BLOCK_SIZE;i++)
+        {
+            result[i]=(byte) n;
+        }
+
         return result;
     }
 
@@ -47,6 +60,13 @@ public class OraclePaddingClient {
         /**
          * TODO : YOUR CODE HERE
          */
+        //System.arraycopy(iv,0,result,0,BLOCK_SIZE);
+        for (int i=0;i<BLOCK_SIZE;i++){
+            if(i==position) result[i]= (byte) (iv[i] ^ guess ^ 1);
+            else result[i]=iv[i];
+        }
+
+
 
         return result;
     }
@@ -84,11 +104,18 @@ public class OraclePaddingClient {
 
         int blocNumber = message.length / BLOCK_SIZE;
 
-        byte[][] result = new byte[blocNumber][BLOCK_SIZE];
+
 
         /*
         TODO : YOUR CODE HERE
          */
+        byte[][] result = new byte[blocNumber][BLOCK_SIZE];
+        int i,j;
+        for(i=0; i<blocNumber;i++){
+            for(j=0; j<blocNumber;j++){
+                result[i][j] = message[(i*BLOCK_SIZE)+j];
+            }
+        }
         return result;
     }
 
