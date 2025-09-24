@@ -61,9 +61,10 @@ public class OraclePaddingClient {
          * TODO : YOUR CODE HERE
          */
         //System.arraycopy(iv,0,result,0,BLOCK_SIZE);
+        byte [] padding=buildPaddingArray(BLOCK_SIZE-position);
         for (int i=0;i<BLOCK_SIZE;i++){
-            if(i==position) result[i]= (byte) (iv[i] ^ guess ^ 1);
-            else result[i]=iv[i];
+            if(i==position) result[i]= (byte) (iv[i] ^ decoded[i] ^ guess ^ padding[i]);
+            else result[i]= (byte) (iv[i] ^ decoded[i] ^ padding[i]);
         }
 
 
@@ -112,7 +113,7 @@ public class OraclePaddingClient {
         byte[][] result = new byte[blocNumber][BLOCK_SIZE];
         int i,j;
         for(i=0; i<blocNumber;i++){
-            for(j=0; j<blocNumber;j++){
+            for(j=0; j<BLOCK_SIZE;j++){
                 result[i][j] = message[(i*BLOCK_SIZE)+j];
             }
         }
